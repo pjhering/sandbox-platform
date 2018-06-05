@@ -2,6 +2,7 @@ package org.petehering.sandbox.platform;
 
 import org.petehering.sandbox.DesktopApp;
 import org.petehering.sandbox.DesktopConfig;
+import static org.petehering.sandbox.platform.Global.*;
 
 public class App 
 {
@@ -10,9 +11,9 @@ public class App
         DesktopConfig c = new DesktopConfig ();
         c.input = new PlatformInput ();
         c.game = new PlatformGame (c.input);
-        c.title = "Sandbox Platform 1.0";
-        c.width = 640;
-        c.height = 480;
+        c.title = APP_TITLE;
+        c.width = APP_WIDTH;
+        c.height = APP_HEIGHT;
         
         DesktopApp app = new DesktopApp (c);
         app.start ();

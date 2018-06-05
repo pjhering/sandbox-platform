@@ -2,16 +2,10 @@ package org.petehering.sandbox.platform;
 
 import static java.awt.event.KeyEvent.*;
 import org.petehering.sandbox.DesktopInput;
+import static org.petehering.sandbox.platform.Global.*;
 
 class PlatformInput extends DesktopInput
 {
-    public static final int UNKNOWN = -1;
-    public static final int UP = 0;
-    public static final int RIGHT = 1;
-    public static final int DOWN = 2;
-    public static final int LEFT = 3;
-    public static final int JUMP = 4;
-    public static final int SHOOT = 5;
 
     public PlatformInput ()
     {

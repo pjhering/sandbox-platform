@@ -4,6 +4,7 @@ import static java.awt.Color.BLACK;
 import org.petehering.sandbox.DesktopInput;
 import org.petehering.sandbox.Game;
 import org.petehering.sandbox.View;
+import static org.petehering.sandbox.platform.Global.*;
 
 class PlatformGame implements Game
 {
@@ -13,7 +14,7 @@ class PlatformGame implements Game
     public PlatformGame (DesktopInput input)
     {
         this.input = input;
-        this.stage = new Stage (640, 480);
+        this.stage = new Stage (APP_WIDTH, APP_HEIGHT);
     }
 
     @Override
@@ -25,7 +26,7 @@ class PlatformGame implements Game
     @Override
     public void render (View view)
     {
-        view.clear (BLACK);
+        view.clear (CLEAR_COLOR);
         stage.render (view.getViewGraphics ());
         view.present ();
     }

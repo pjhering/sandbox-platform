@@ -7,10 +7,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import static java.lang.Math.round;
-import static java.lang.System.out;
+//import static java.lang.System.out;
 import java.util.LinkedList;
 import javax.imageio.ImageIO;
 import static org.petehering.sandbox.Utility.clamp;
+import static org.petehering.sandbox.platform.Global.*;
 import org.petehering.sandbox.sprites.SpriteSheet;
 
 class Stage
@@ -39,17 +40,34 @@ class Stage
     {
         this.viewWidth = viewWidth;
         this.viewHeight = viewHeight;
+//        out.println ("viewWidth=" + viewWidth);
+//        out.println ("viewHeight=" + viewHeight);
 
-        this.bricks = loadBricks ("/bricks.txt");
+        this.bricks = loadBricks (BRICKS_FILE);
         brickWidth = bricks[0][0].getWidth ();
         brickHeight = bricks[0][0].getHeight ();
         this.width = bricks.length * bricks[0][0].getWidth ();
         this.height = bricks[0].length * bricks[0][0].getHeight ();
+//        out.println ("brickWidth=" + brickWidth);
+//        out.println ("brickHeight=" + brickHeight);
+//        out.println ("width=" + width);
+//        out.println ("height=" + height);
 
         this.numberOfVisibleColumns = viewWidth / brickWidth + 2;
         this.numberOfVisibleRows = viewHeight / brickHeight + 2;
+//        out.println ("numberOfVisibleColumns=" + numberOfVisibleColumns);
+//        out.println ("numberOfVisibleRows=" + numberOfVisibleRows);
 
-        this.player = new Player (32, 32);
+        this.player = new Player (PLAYER_START_X, PLAYER_START_Y);
+        
+        updateOffsets ();
+        updateFirstAndLastRowsAndColumns();
+//        out.println ("xOffset=" + xOffset);
+//        out.println ("yOffset=" + yOffset);
+//        out.println ("firstVisibleColumn=" + firstVisibleColumn);
+//        out.println ("lastVisibleColumn=" + lastVisibleColumn);
+//        out.println ("firstVisibleRow=" + firstVisibleRow);
+//        out.println ("lastVisibleRow=" + lastVisibleRow);
     }
 
     private Brick[][] loadBricks (String file)
@@ -60,8 +78,7 @@ class Stage
         {
             InputStreamReader reader = new InputStreamReader (stream1);
             BufferedReader buffer = new BufferedReader (reader);
-            String delim = "\\s+";
-            String[] tokens = buffer.readLine ().split (delim);
+            String[] tokens = buffer.readLine ().split (WHITESPACE);
             BufferedImage image = null;
             
             try (InputStream stream2 = getClass ().getResourceAsStream (tokens[0]))
@@ -96,15 +113,14 @@ class Stage
             {
                 int y = i * tileHeight;
                 line = lines.remove ();
-                tokens = line.trim ().split (delim);
+                tokens = line.trim ().split (WHITESPACE);
                 array[i] = new Brick[tokens.length];
 
                 for (int j = 0; j < tokens.length; j++)
                 {
                     int x = j * tileWidth;
                     int tileIndex = Integer.parseInt (tokens[j]);
-                    array[i][j] = new Brick (subimages[tileIndex], tileIndex == 0, x, y, tileWidth, tileHeight);
-                    out.println (array[i][j].isBlocked ());
+                    array[i][j] = new Brick (subimages[tileIndex], tileIndex != 0, x, y, tileWidth, tileHeight);
                 }
             }
         }
@@ -115,18 +131,6 @@ class Stage
         
         return array;
     }
-
-    void update (long elapsed)
-    {
-        updateOffsets ();
-        updateFirstAndLastRowsAndColumns ();
-    }
-
-    void render (Graphics2D g)
-    {
-        this.renderBricks (g);
-        this.renderPlayer (g);
-    }
     
     private int getColumn (float x)
     {
@@ -136,6 +140,13 @@ class Stage
     private int getRow (float y)
     {
         return round (y) / brickHeight;
+    }
+
+    void update (long elapsed)
+    {
+        player.update(elapsed);
+        updateOffsets ();
+        updateFirstAndLastRowsAndColumns ();
     }
 
     private void updateOffsets ()
@@ -153,7 +164,13 @@ class Stage
         lastVisibleColumn = firstVisibleColumn + numberOfVisibleColumns;
 
         firstVisibleRow = yOffset / brickHeight;
-        lastVisibleColumn = firstVisibleColumn + numberOfVisibleColumns;
+        lastVisibleRow = firstVisibleRow + numberOfVisibleRows;
+    }
+
+    void render (Graphics2D g)
+    {
+        this.renderBricks (g);
+        this.renderPlayer (g);
     }
 
     void renderPlayer (Graphics2D g)
