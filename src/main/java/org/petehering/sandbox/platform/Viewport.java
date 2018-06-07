@@ -21,12 +21,12 @@ class Viewport
         this.stageHeight = stageHeight;
     }
     
-    public boolean isViewable (StageObject obj)
+    public boolean contains (StageObject obj)
     {
         return this.x < obj.getRight() &&
-                this.y < obj.getTop() &&
+                this.y < obj.getBottom() &&
                 obj.getLeft() < this.x + this.width &&
-                obj.getBottom() < this.y + this.height;
+                obj.getTop() < this.y + this.height;
     }
     
     void center (StageObject obj)
