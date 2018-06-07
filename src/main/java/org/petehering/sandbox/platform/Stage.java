@@ -16,8 +16,9 @@ import org.petehering.sandbox.sprites.SpriteSheet;
 
 class Stage
 {
-    private final int viewWidth;
-    private final int viewHeight;
+    private Viewport viewport;
+//    private final int viewWidth;
+//    private final int viewHeight;
     
     private final Brick[][] bricks;
     private final int brickWidth;
@@ -29,8 +30,8 @@ class Stage
     
     private final Player player;
     
-    private int xOffset;
-    private int yOffset;
+//    private int xOffset;
+//    private int yOffset;
     private int numberOfRows;
     private int numberOfColumns;
     private int firstVisibleRow;
@@ -40,23 +41,26 @@ class Stage
 
     Stage (int viewWidth, int viewHeight)
     {
-        this.viewWidth = viewWidth;
-        this.viewHeight = viewHeight;
+//        this.viewWidth = viewWidth;
+//        this.viewHeight = viewHeight;
 
         this.bricks = loadBricks (BRICKS_FILE);
         brickWidth = bricks[0][0].getWidth ();
         brickHeight = bricks[0][0].getHeight ();
-        this.width = bricks.length * bricks[0][0].getWidth ();
-        this.height = bricks[0].length * bricks[0][0].getHeight ();
+        this.width = bricks.length * brickWidth;
+        this.height = bricks[0].length * brickHeight;
+        
+        this.viewport = new Viewport (viewWidth, viewHeight, width, height);
 
-        this.numberOfVisibleColumns = viewWidth / brickWidth + 2;
-        this.numberOfVisibleRows = viewHeight / brickHeight + 2;
+        this.numberOfVisibleColumns = viewWidth / brickWidth;
+        this.numberOfVisibleRows = viewHeight / brickHeight;
 
         this.player = new Player (PLAYER_START_X, PLAYER_START_Y);
         this.player.setCurrentAnimation (IDLE);
-        this.player.setDelta (0.0f, 0.1f);
+        this.player.setDelta (0.2f, 0.1f);
         
-        updateOffsets ();
+        viewport.center(player);
+//        updateOffsets ();
         updateFirstAndLastRowsAndColumns();
     }
 
@@ -139,25 +143,28 @@ class Stage
     void update (long elapsed)
     {
         player.update(elapsed);
-        updateOffsets ();
+        viewport.center(player);
+//        updateOffsets ();
         updateFirstAndLastRowsAndColumns ();
     }
 
-    private void updateOffsets ()
-    {
-        float x = player.getCenterX () - (width / 2f);
-        float y = player.getCenterY () - (height / 2f);
+//    private void updateOffsets ()
+//    {
+//        float x = player.getCenterX () - (width / 2f);
+//        float y = player.getCenterY () - (height / 2f);
 
-        xOffset = round (clamp (x, 0f, width - viewWidth));
-        yOffset = round (clamp (y, 0f, height - viewHeight));
-    }
+//        xOffset = round (clamp (x, 0f, width - viewWidth));
+//        yOffset = round (clamp (y, 0f, height - viewHeight));
+//    }
 
     private void updateFirstAndLastRowsAndColumns ()
     {
-        firstVisibleColumn = xOffset / brickWidth;
+        firstVisibleColumn = viewport.getXOffset() / brickWidth;
+//        firstVisibleColumn = xOffset / brickWidth;
         lastVisibleColumn = firstVisibleColumn + numberOfVisibleColumns;
 
-        firstVisibleRow = yOffset / brickHeight;
+        firstVisibleRow = viewport.getYOffset() / brickHeight;
+//        firstVisibleRow = yOffset / brickHeight;
         lastVisibleRow = firstVisibleRow + numberOfVisibleRows;
     }
 
@@ -169,7 +176,8 @@ class Stage
 
     void renderPlayer (Graphics2D g)
     {
-        player.render (g, xOffset, yOffset);
+//        player.render (g, xOffset, yOffset);
+        player.render(g, viewport.getXOffset(), viewport.getYOffset());
     }
 
     void renderBricks (Graphics2D g)
@@ -183,7 +191,8 @@ class Stage
             {
                 if (col >= numberOfColumns) break;
                 
-                bricks[row][col].draw (g, xOffset, yOffset);
+                bricks[row][col].draw(g, viewport.getXOffset(), viewport.getYOffset());
+//                bricks[row][col].draw (g, xOffset, yOffset);
                 //count += 1;
             }
         }

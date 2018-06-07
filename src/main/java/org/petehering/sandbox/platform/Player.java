@@ -8,24 +8,14 @@ import static java.lang.Math.round;
 import static org.petehering.sandbox.platform.Global.*;
 import org.petehering.sandbox.sprites.SpriteSheet;
 
-class Player
+class Player extends StageObject
 {
-    
-    private float x;
-    private float y;
-    private float width;
-    private float height;
-    private float dx;
-    private float dy;
     private int currentAnimation;
     private final Animation[] animations;
     
-//    Player (float x, float y, Animation[] animations)
     Player (float x, float y)
     {
-        this.x = x;
-        this.y = y;
-//        this.animations = requireNonNull (animations);
+        super (x, y);
         animations = new Animation[PLAYER_ANIMATION_COUNT];
         currentAnimation = 0;
         
@@ -46,12 +36,6 @@ class Player
         {
             throw new RuntimeException (ex);
         }
-    }
-    
-    void setDelta (float dx, float dy)
-    {
-        this.dx = dx;
-        this.dy = dy;
     }
     
     void setCurrentAnimation (int i)
@@ -93,35 +77,5 @@ class Player
         a.update();
         width = a.getBufferedImage ().getWidth ();
         height = a.getBufferedImage ().getHeight ();
-    }
-    
-    float getLeft ()
-    {
-        return x;
-    }
-    
-    float getRight ()
-    {
-        return x + width;
-    }
-    
-    float getTop ()
-    {
-        return y;
-    }
-    
-    float getBottom ()
-    {
-        return y + height;
-    }
-
-    float getCenterX ()
-    {
-        return x + (width / 2f);
-    }
-
-    float getCenterY ()
-    {
-        return y + (height / 2f);
     }
 }
