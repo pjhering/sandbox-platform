@@ -31,6 +31,8 @@ class Stage
     
     private int xOffset;
     private int yOffset;
+    private int numberOfRows;
+    private int numberOfColumns;
     private int firstVisibleRow;
     private int firstVisibleColumn;
     private int lastVisibleRow;
@@ -40,34 +42,22 @@ class Stage
     {
         this.viewWidth = viewWidth;
         this.viewHeight = viewHeight;
-//        out.println ("viewWidth=" + viewWidth);
-//        out.println ("viewHeight=" + viewHeight);
 
         this.bricks = loadBricks (BRICKS_FILE);
         brickWidth = bricks[0][0].getWidth ();
         brickHeight = bricks[0][0].getHeight ();
         this.width = bricks.length * bricks[0][0].getWidth ();
         this.height = bricks[0].length * bricks[0][0].getHeight ();
-//        out.println ("brickWidth=" + brickWidth);
-//        out.println ("brickHeight=" + brickHeight);
-//        out.println ("width=" + width);
-//        out.println ("height=" + height);
 
         this.numberOfVisibleColumns = viewWidth / brickWidth + 2;
         this.numberOfVisibleRows = viewHeight / brickHeight + 2;
-//        out.println ("numberOfVisibleColumns=" + numberOfVisibleColumns);
-//        out.println ("numberOfVisibleRows=" + numberOfVisibleRows);
 
         this.player = new Player (PLAYER_START_X, PLAYER_START_Y);
+        this.player.setCurrentAnimation (IDLE);
+        this.player.setDelta (0.0f, 0.1f);
         
         updateOffsets ();
         updateFirstAndLastRowsAndColumns();
-//        out.println ("xOffset=" + xOffset);
-//        out.println ("yOffset=" + yOffset);
-//        out.println ("firstVisibleColumn=" + firstVisibleColumn);
-//        out.println ("lastVisibleColumn=" + lastVisibleColumn);
-//        out.println ("firstVisibleRow=" + firstVisibleRow);
-//        out.println ("lastVisibleRow=" + lastVisibleRow);
     }
 
     private Brick[][] loadBricks (String file)
@@ -111,6 +101,7 @@ class Stage
             
             for (int i = 0; i < rows; i++)
             {
+                numberOfRows += 1;
                 int y = i * tileHeight;
                 line = lines.remove ();
                 tokens = line.trim ().split (WHITESPACE);
@@ -118,11 +109,14 @@ class Stage
 
                 for (int j = 0; j < tokens.length; j++)
                 {
+                    if (j > numberOfColumns) numberOfColumns += 1;
                     int x = j * tileWidth;
                     int tileIndex = Integer.parseInt (tokens[j]);
                     array[i][j] = new Brick (subimages[tileIndex], tileIndex != 0, x, y, tileWidth, tileHeight);
                 }
             }
+            
+            numberOfRows = rows;
         }
         catch (IOException ex1)
         {
@@ -180,12 +174,19 @@ class Stage
 
     void renderBricks (Graphics2D g)
     {
+        //int count = 0;
         for (int row = firstVisibleRow; row <= lastVisibleRow; row++)
         {
+            if (row >= numberOfRows) break;
+            
             for (int col = firstVisibleColumn; col <= lastVisibleColumn; col++)
             {
+                if (col >= numberOfColumns) break;
+                
                 bricks[row][col].draw (g, xOffset, yOffset);
+                //count += 1;
             }
         }
+        //out.println ("rendered " + count + " bricks");
     }
 }

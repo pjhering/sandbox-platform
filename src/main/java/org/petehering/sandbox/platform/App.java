@@ -14,6 +14,7 @@ public class App
         c.title = APP_TITLE;
         c.width = APP_WIDTH;
         c.height = APP_HEIGHT;
+        c.icon = APP_ICON;
         
         DesktopApp app = new DesktopApp (c);
         app.start ();

@@ -206,16 +206,5 @@
        rx="0"
        ry="0"
        transform="scale(-1,1)" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:24px;line-height:1.25;font-family:'Courier New';-inkscape-font-specification:'Courier New';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
-       x="10.646034"
-       y="375.58774"
-       id="text837"><tspan
-         sodipodi:role="line"
-         id="tspan835"
-         x="10.646034"
-         y="375.58774"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.66666698px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#00ffff;fill-opacity:1">x</tspan></text>
   </g>
 </svg>

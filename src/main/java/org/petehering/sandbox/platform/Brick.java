@@ -3,6 +3,7 @@ package org.petehering.sandbox.platform;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import static java.util.Objects.requireNonNull;
+import static org.petehering.sandbox.platform.Global.*;
 
 class Brick
 {
@@ -26,6 +27,12 @@ class Brick
     void draw (Graphics2D g, int xOffset, int yOffset)
     {
         g.drawImage (image, x - xOffset, y - yOffset, width, height, null);
+        
+        if (DEBUG)
+        {
+            g.setColor (blocked ? BRICK_BLOCKED_COLOR : BRICK_NORMAL_COLOR);
+            g.drawRect (x - xOffset, y - yOffset, width - 1, height - 1);
+        }
     }
     
     int getX ()

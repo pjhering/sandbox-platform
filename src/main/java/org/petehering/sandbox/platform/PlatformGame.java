@@ -1,6 +1,5 @@
 package org.petehering.sandbox.platform;
 
-import static java.awt.Color.BLACK;
 import org.petehering.sandbox.DesktopInput;
 import org.petehering.sandbox.Game;
 import org.petehering.sandbox.View;

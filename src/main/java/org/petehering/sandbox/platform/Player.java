@@ -4,8 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import static java.lang.Math.round;
-import java.util.ArrayList;
-import java.util.List;
+//import static java.util.Objects.requireNonNull;
 import static org.petehering.sandbox.platform.Global.*;
 import org.petehering.sandbox.sprites.SpriteSheet;
 
@@ -16,11 +15,17 @@ class Player
     private float y;
     private float width;
     private float height;
+    private float dx;
+    private float dy;
     private int currentAnimation;
     private final Animation[] animations;
     
+//    Player (float x, float y, Animation[] animations)
     Player (float x, float y)
     {
+        this.x = x;
+        this.y = y;
+//        this.animations = requireNonNull (animations);
         animations = new Animation[PLAYER_ANIMATION_COUNT];
         currentAnimation = 0;
         
@@ -43,6 +48,12 @@ class Player
         }
     }
     
+    void setDelta (float dx, float dy)
+    {
+        this.dx = dx;
+        this.dy = dy;
+    }
+    
     void setCurrentAnimation (int i)
     {
         if (0 >= i && i < animations.length)
@@ -50,18 +61,34 @@ class Player
             currentAnimation = i;
             Animation a = animations[currentAnimation];
             a.reset ();
+            this.width = a.getBufferedImage ().getWidth ();
+            this.height = a.getBufferedImage ().getHeight ();
         }
     }
 
     void render (Graphics2D g, int xOffset, int yOffset)
     {
         Animation a = animations[currentAnimation];
-        BufferedImage i = a.getBufferedImage ();
-        g.drawImage (i, round (x) - xOffset, round (y) - yOffset, null);
+        BufferedImage img = a.getBufferedImage ();
+        int _x = round (x) - xOffset;
+        int _y = round (y) - yOffset;
+        g.drawImage (img, _x, _y, null);
+        
+        if (DEBUG)
+        {
+            g.setColor (PLAYER_DEBUG_COLOR);
+            g.drawRect (_x, _y, round (width) - 1, round (height) - 1);
+        }
     }
     
     void update (long elapsed)
     {
+        float destX = x + (dx * elapsed);
+        float destY = y + (dy * elapsed);
+        
+        x = destX;
+        y = destY;
+        
         Animation a = animations[currentAnimation];
         a.update();
         width = a.getBufferedImage ().getWidth ();
