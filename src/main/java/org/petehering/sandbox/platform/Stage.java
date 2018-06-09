@@ -9,6 +9,8 @@ import java.io.InputStreamReader;
 import static java.lang.Math.round;
 import static java.lang.System.out;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.TreeMap;
 import javax.imageio.ImageIO;
 import static org.petehering.sandbox.platform.Global.*;
 import org.petehering.sandbox.sprites.SpriteSheet;
@@ -31,8 +33,8 @@ class Stage
     private int firstVisibleColumn;
     private int lastVisibleRow;
     private int lastVisibleColumn;
-    
-    private final Player player;
+    private final TreeMap<Integer, List<StageObject>> groups;
+    private Player player;
 
     Stage (int viewWidth, int viewHeight)
     {
@@ -49,12 +51,7 @@ class Stage
         this.numberOfVisibleColumns = viewWidth / brickWidth;
         this.numberOfVisibleRows = viewHeight / brickHeight;
 
-        this.player = new Player (PLAYER_START_X, PLAYER_START_Y);
-        this.player.setCurrentAnimation (IDLE);
-        this.player.setDelta (0.2f, 0.1f);
-        
-        viewport.center(player);
-        updateFirstAndLastRowsAndColumns();
+        this.groups = new TreeMap<> ();
     }
 
     private Brick[][] loadBricks (String file)
@@ -180,5 +177,15 @@ class Stage
                 bricks[row][col].draw(g, viewport.getXOffset(), viewport.getYOffset());
             }
         }
+    }
+
+    Player getPlayer ()
+    {
+        return player;
+    }
+
+    void setPlayer (Player player)
+    {
+        this.player = player;
     }
 }
