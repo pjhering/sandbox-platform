@@ -4,13 +4,15 @@ import java.awt.Color;
 import static java.awt.Color.*;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import static java.awt.image.BufferedImage.TYPE_INT_RGB;
+import static java.awt.image.BufferedImage.TYPE_INT_ARGB_PRE;
 
 public class TestUtility
 {
+    private static final Color clear = new Color (0, 0, 0, 0);
+    
     public static BufferedImage createTestTileImage ()
     {
-        BufferedImage image = new BufferedImage (32, 32, TYPE_INT_RGB);
+        BufferedImage image = new BufferedImage (32, 32, TYPE_INT_ARGB_PRE);
         Graphics g = image.getGraphics ();
         g.setColor (BLACK);
         g.fillRect (0, 0, 32, 32);
@@ -24,10 +26,12 @@ public class TestUtility
     }
     public static BufferedImage createTestStateImage (Color color)
     {
-        BufferedImage image = new BufferedImage (32, 32, TYPE_INT_RGB);
+        BufferedImage image = new BufferedImage (32, 32, TYPE_INT_ARGB_PRE);
         Graphics g = image.getGraphics ();
-        g.setColor (BLACK);
+        g.setColor (clear);
         g.fillRect (0, 0, 32, 32);
+        g.setColor (BLACK);
+        g.fillOval (0, 0, 31, 31);
         g.setColor (color);
         g.drawOval (0, 0, 31, 31);
         g.dispose ();

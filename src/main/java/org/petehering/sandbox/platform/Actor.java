@@ -3,6 +3,8 @@ package org.petehering.sandbox.platform;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import static java.lang.Math.round;
+import java.util.HashSet;
+import java.util.Set;
 import static org.petehering.sandbox.Utility.requireGreaterThan;
 import static org.petehering.sandbox.Utility.requireNonNull;
 
@@ -15,6 +17,8 @@ public class Actor implements Comparable<Actor>
     private float y;
     private float width;
     private float height;
+    private Set<Actor> added;
+    private Set<Actor> removed;
     
     public Actor (State[] states, float width, float height)
     {
@@ -29,6 +33,18 @@ public class Actor implements Comparable<Actor>
         this.width = requireGreaterThan (0f, width);
         this.height = requireGreaterThan (0f, height);
         this.state = 0;
+        this.added = new HashSet<> ();
+        this.removed = new HashSet<> ();
+    }
+    
+    public boolean add (Actor actor)
+    {
+        return this.added.add (actor);
+    }
+    
+    public boolean remove (Actor actor)
+    {
+        return this.removed.add (actor);
     }
     
     public void draw (Graphics2D g, int xOffset, int yOffset)
@@ -152,5 +168,31 @@ public class Actor implements Comparable<Actor>
             : this.group == that.group
             ? 0
             : 1;
+    }
+
+    public Set<Actor> getAdded ()
+    {
+        return added;
+    }
+
+    public Set<Actor> getRemoved ()
+    {
+        return removed;
+    }
+
+    public void update (long elapsed)
+    {
+    }
+
+    public void hitActor (Actor a)
+    {
+    }
+
+    public boolean intersects (Actor that)
+    {
+        return this.x < that.x + that.width
+            && that.x < this.x + this.width
+            && this.y < that.y + that.height
+            && that.y < this.y + this.height;
     }
 }
