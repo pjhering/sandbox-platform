@@ -43,4 +43,12 @@ public class Viewport
         
         offset.setLocation (x, y);
     }
+
+    public boolean contains (Actor a)
+    {
+        return this.x < a.getMaxX ()
+            && this.x + this.width > a.getMinX ()
+            && this.y < a.getMaxY ()
+            && this.y + this.height > a.getMinY ();
+    }
 }
