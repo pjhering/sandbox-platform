@@ -1,77 +1,46 @@
 package org.petehering.sandbox.platform;
 
-import static java.lang.Math.round;
+import java.awt.Point;
 import static org.petehering.sandbox.Utility.clamp;
+import static org.petehering.sandbox.Utility.requireGreaterThan;
 
-
-class Viewport
+public class Viewport
 {
     private float x;
     private float y;
-    private final float width;
-    private final float height;
-    private final float stageWidth;
-    private final float stageHeight;
+    public final float width;
+    public final float height;
+    public final Point offset;
     
-    Viewport (float width, float height, float stageWidth, float stageHeight)
+    public Viewport (float width, float height)
     {
-        this.width = width;
-        this.height = height;
-        this.stageWidth = stageWidth;
-        this.stageHeight = stageHeight;
+        this (0f, 0f, width, height);
     }
     
-    public boolean contains (StageObject obj)
+    public Viewport (float x, float y, float width, float height)
     {
-        return this.x < obj.getRight() &&
-                this.y < obj.getBottom() &&
-                obj.getLeft() < this.x + this.width &&
-                obj.getTop() < this.y + this.height;
+        this.x = x;
+        this.y = y;
+        this.width = requireGreaterThan (0f, width);
+        this.height = requireGreaterThan (0f, height);
+        this.offset = new Point ();
     }
     
-    void center (StageObject obj)
+    public void center (Stage stage)
     {
-        this.x = clamp (obj.getCenterX () - (width / 2f), 0f, stageWidth - width);
-        this.y = clamp (obj.getCenterY () - (height / 2f), 0f, stageHeight - height);
-    }
-    
-    int getXOffset ()
-    {
-        return round (x);
-    }
-    
-    int getYOffset ()
-    {
-        return round (y);
-    }
-
-    float getX()
-    {
-        return x;
-    }
-
-    float getY()
-    {
-        return y;
-    }
-
-    float getWidth()
-    {
-        return width;
-    }
-
-    float getHeight()
-    {
-        return height;
-    }
-
-    float getStageWidth()
-    {
-        return stageWidth;
-    }
-
-    float getStageHeight()
-    {
-        return stageHeight;
+        Actor a = stage.getFocus ();
+        
+        if (a != null)
+        {
+            x = clamp (a.getCenterX () - (width / 2f), 0f, stage.tileLayer.width - width);
+            y = clamp (a.getCenterY () - (height / 2f), 0f, stage.tileLayer.height - height);
+        }
+        else
+        {
+            x = (stage.tileLayer.width - width) / 2f;
+            y = (stage.tileLayer.height - height) / 2f;
+        }
+        
+        offset.setLocation (x, y);
     }
 }
