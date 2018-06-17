@@ -104,4 +104,33 @@ public class TileLayer
     {
         return lastVisibleColumn;
     }
+
+    public void detectCollisons (Actor a)
+    {
+        float top = a.getMinY ();
+        float bottom = a.getMaxY ();
+        float left = a.getMinX ();
+        float right = a.getMaxX ();
+        
+        Tile tl = getTile (top, left);
+        Tile tr = getTile (top, right);
+        Tile bl = getTile (bottom, left);
+        Tile br = getTile (bottom, right);
+        
+        if ((tl != null && tl.blocked) ||
+            (tr != null && tr.blocked) ||
+            (bl != null && bl.blocked) ||
+            (br != null && br.blocked))
+        {
+            a.hitTile (tl, tr, bl, br);
+        }
+    }
+    
+    private Tile getTile (float y, float x)
+    {
+        int row = (int) (y / tileHeight);
+        int col = (int) (x / tileWidth);
+        
+        return getTile (row, col);
+    }
 }

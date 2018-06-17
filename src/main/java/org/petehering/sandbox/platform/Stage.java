@@ -46,6 +46,7 @@ public class Stage
         for (int a = 0; a < size; a++)
         {
             Actor a1 = actors.get (a);
+            tileLayer.detectCollisons (a1);
 
             for (int b = a + 1; b < size; b++)
             {

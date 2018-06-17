@@ -36,6 +36,18 @@ public class Actor implements Comparable<Actor>
         this.added = new HashSet<> ();
         this.removed = new HashSet<> ();
     }
+
+    public void update (long elapsed)
+    {
+    }
+
+    public void hitActor (Actor a)
+    {
+    }
+
+    public void hitTile (Tile topLeft, Tile topRight, Tile bottomLeft, Tile bottomRight)
+    {
+    }
     
     public boolean add (Actor actor)
     {
@@ -178,14 +190,6 @@ public class Actor implements Comparable<Actor>
     public Set<Actor> getRemoved ()
     {
         return removed;
-    }
-
-    public void update (long elapsed)
-    {
-    }
-
-    public void hitActor (Actor a)
-    {
     }
 
     public boolean intersects (Actor that)
