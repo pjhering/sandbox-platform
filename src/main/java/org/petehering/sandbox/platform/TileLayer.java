@@ -50,7 +50,15 @@ public class TileLayer
     
     public Tile getTile (int row, int column)
     {
-        return tiles[row][column];
+        if (0 <= row && row < tiles.length)
+        {
+            if (0 <= column && column < tiles[row].length)
+            {
+                return tiles[row][column];
+            }
+        }
+        
+        return null;
     }
     
     public void draw (Graphics2D g, int xOffset, int yOffset)
@@ -77,12 +85,12 @@ public class TileLayer
         lastVisibleColumn = clamp (
             (int) (1 + firstVisibleColumn + (vp.width / tileWidth)),
             firstVisibleColumn,
-            columns);
+            columns - 1);
         
         lastVisibleRow = clamp (
             (int) (1 + firstVisibleRow + (vp.height / tileHeight)),
             firstVisibleRow,
-            rows);
+            rows - 1);
     }
 
     public int getFirstVisibleRow ()

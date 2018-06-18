@@ -7,8 +7,9 @@ public class Test02
 {
     public static void main (String[] args)
     {
-        Game game = new Game02 ();
-        DesktopApp app = new DesktopApp (game, 320, 240);
+        TestInput input = new TestInput ();
+        Game game = new Game02 (input);
+        DesktopApp app = new DesktopApp (game, input, 320, 240);
         app.start ();
     }
 }
