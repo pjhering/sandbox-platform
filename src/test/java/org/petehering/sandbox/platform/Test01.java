@@ -1,11 +1,25 @@
 package org.petehering.sandbox.platform;
 
 import static java.lang.System.out;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 import static org.petehering.sandbox.platform.TestUtility.createTestStage;
 
-public class Test01
+public class Test01 extends TestCase
 {
-    public static void main (String[] args)
+    public Test01 (String name)
+    {
+        super (name);
+    }
+    
+    public static Test suite()
+    {
+        return new TestSuite( Test01.class );
+    }
+    
+    public void test01 ()
+//    public static void main (String[] args)
     {
         Stage stage = createTestStage (30, 40, 320, 240);
         
@@ -31,7 +45,8 @@ public class Test01
         }
     }
     
-    private static void update (Stage stage, int x, int y)
+    private void update (Stage stage, int x, int y)
+//    private static void update (Stage stage, int x, int y)
     {
         Actor a = stage.getFocus ();
         a.setX (x);
