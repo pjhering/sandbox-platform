@@ -1,6 +1,7 @@
 package org.petehering.sandbox.platform;
 
 import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -75,7 +76,38 @@ public final class TileLayerIO
         return layer;
     }
     
-    public void write (TextTileLayer layer, String path) throws IOException//TODO
+    public void write (TextTileLayer layer, String path)
     {
+        String tileset = layer.getTileset ().getConfiguration ();
+
+        try (FileWriter file = new FileWriter (path, false))
+        {
+            file.write (tileset);
+            file.write ("\n");
+            
+            for (int r = 0; r < layer.getRows (); r++)
+            {
+                for (int c = 0; c < layer.getColumns (); c++)
+                {
+                    Tile t = layer.getTile (r, c);
+                    if (t != null)
+                    {
+                        file.write (Integer.toString (t.getType ()));
+                    }
+                    else
+                    {
+                        file.write ("-1");
+                    }
+                    
+                    file.write (' ');
+                }
+                file.write ('\n');
+            }
+            file.flush ();
+        }
+        catch (Exception ex)
+        {
+            throw new RuntimeException (ex);
+        }
     }
 }

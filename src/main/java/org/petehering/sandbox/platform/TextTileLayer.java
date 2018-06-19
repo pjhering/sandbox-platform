@@ -149,33 +149,45 @@ public class TextTileLayer implements TileLayer
         return getTile(row, col);
     }
 
+    @Override
     public int getRows()
     {
         return rows;
     }
 
+    @Override
     public int getColumns()
     {
         return columns;
     }
 
+    @Override
     public int getTileWidth()
     {
         return tileWidth;
     }
 
+    @Override
     public int getTileHeight()
     {
         return tileHeight;
     }
 
+    @Override
     public int getWidth()
     {
         return width;
     }
 
+    @Override
     public int getHeight()
     {
         return height;
+    }
+
+    @Override
+    public Tileset getTileset ()
+    {
+        return this.tileset;
     }
 }

@@ -30,6 +30,8 @@ public interface TileLayer
     int getLastVisibleColumn();
 
     int getLastVisibleRow();
+    
+    Tileset getTileset ();
 
     Tile getTile(int row, int column);
 

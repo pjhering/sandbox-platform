@@ -89,4 +89,17 @@ public class TextTileset implements Tileset
     {
         return blocked[id];
     }
+
+    @Override
+    public String getConfiguration ()
+    {
+        return new StringBuilder ()
+            .append (path)
+            .append (' ')
+            .append (rows)
+            .append (' ')
+            .append (columns)
+            .toString ();
+            
+    }
 }

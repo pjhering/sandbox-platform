@@ -5,6 +5,8 @@ import java.awt.image.BufferedImage;
 
 public interface Tileset
 {
+    
+    String getConfiguration ();
 
     boolean getBlocked(int id);
 

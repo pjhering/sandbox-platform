@@ -30,4 +30,10 @@ public class TestTileset implements Tileset
     {
         return "test";
     }
+
+    @Override
+    public String getConfiguration ()
+    {
+        return "test";
+    }
 }
