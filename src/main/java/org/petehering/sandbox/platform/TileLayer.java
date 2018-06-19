@@ -1,12 +1,14 @@
 package org.petehering.sandbox.platform;
 
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
+import static java.util.Objects.requireNonNull;
 import static org.petehering.sandbox.Utility.clamp;
 import static org.petehering.sandbox.Utility.requireGreaterThan;
 
 public class TileLayer
 {
+
+    private final Tileset tileset;
     public final int rows;
     public final int columns;
     public final int tileWidth;
@@ -18,37 +20,33 @@ public class TileLayer
     private int firstVisibleColumn;
     private int lastVisibleRow;
     private int lastVisibleColumn;
-    
-    public TileLayer (int rows, int columns, int tileWidth, int tileHeight)
+
+    public TileLayer(Tileset tileset, int rows, int columns, int tileWidth, int tileHeight)
     {
-        this.rows = requireGreaterThan (0, rows);
-        this.columns = requireGreaterThan (0, columns);
+        this.tileset = requireNonNull (tileset);
+        this.rows = requireGreaterThan(0, rows);
+        this.columns = requireGreaterThan(0, columns);
         this.tiles = new Tile[rows][columns];
-        this.tileWidth = requireGreaterThan (0, tileWidth);
-        this.tileHeight = requireGreaterThan (0, tileHeight);
+        this.tileWidth = requireGreaterThan(0, tileWidth);
+        this.tileHeight = requireGreaterThan(0, tileHeight);
         this.width = columns * tileWidth;
         this.height = rows * tileHeight;
     }
-    
-    public TileLayer set (int row, int column, BufferedImage image)
+
+    public Tile set(int row, int column, int type)
     {
-        return set (row, column, image, true);
+        tiles[row][column] = new Tile(
+                tileset,
+                type,
+                column * tileWidth,
+                row * tileHeight,
+                tileWidth,
+                tileHeight);
+
+        return tiles[row][column];
     }
-    
-    public TileLayer set (int row, int column, BufferedImage image, boolean blocked)
-    {
-        tiles[row][column] = new Tile (
-            image,
-            column * tileWidth,
-            row * tileHeight,
-            tileWidth,
-            tileHeight,
-            blocked);
-        
-        return this;
-    }
-    
-    public Tile getTile (int row, int column)
+
+    public Tile getTile(int row, int column)
     {
         if (0 <= row && row < tiles.length)
         {
@@ -57,88 +55,88 @@ public class TileLayer
                 return tiles[row][column];
             }
         }
-        
+
         return null;
     }
-    
-    public void draw (Graphics2D g, int xOffset, int yOffset)
+
+    public void draw(Graphics2D g, int xOffset, int yOffset)
     {
         for (int r = firstVisibleRow; r <= lastVisibleRow; r++)
         {
             for (int c = firstVisibleColumn; c < lastVisibleColumn; c++)
             {
-                tiles[r][c].draw (g, xOffset, yOffset);
+                tiles[r][c].draw(g, xOffset, yOffset);
             }
         }
     }
 
-    public void center (Viewport vp)
+    public void center(Viewport vp)
     {
         firstVisibleColumn = (vp.offset.x > 0)
-            ? vp.offset.x / tileWidth
-            : 0;
-        
+                ? vp.offset.x / tileWidth
+                : 0;
+
         firstVisibleRow = (vp.offset.y > 0)
-            ? vp.offset.y / tileHeight
-            : 0;
-        
-        lastVisibleColumn = clamp (
-            (int) (1 + firstVisibleColumn + (vp.width / tileWidth)),
-            firstVisibleColumn,
-            columns - 1);
-        
-        lastVisibleRow = clamp (
-            (int) (1 + firstVisibleRow + (vp.height / tileHeight)),
-            firstVisibleRow,
-            rows - 1);
+                ? vp.offset.y / tileHeight
+                : 0;
+
+        lastVisibleColumn = clamp(
+                (int) (1 + firstVisibleColumn + (vp.width / tileWidth)),
+                firstVisibleColumn,
+                columns - 1);
+
+        lastVisibleRow = clamp(
+                (int) (1 + firstVisibleRow + (vp.height / tileHeight)),
+                firstVisibleRow,
+                rows - 1);
     }
 
-    public int getFirstVisibleRow ()
+    public int getFirstVisibleRow()
     {
         return firstVisibleRow;
     }
 
-    public int getFirstVisibleColumn ()
+    public int getFirstVisibleColumn()
     {
         return firstVisibleColumn;
     }
 
-    public int getLastVisibleRow ()
+    public int getLastVisibleRow()
     {
         return lastVisibleRow;
     }
 
-    public int getLastVisibleColumn ()
+    public int getLastVisibleColumn()
     {
         return lastVisibleColumn;
     }
 
-    public void detectCollisons (Actor a)
+    public void detectCollisons(Actor a)
     {
-        float top = a.getMinY ();
-        float bottom = a.getMaxY ();
-        float left = a.getMinX ();
-        float right = a.getMaxX ();
-        
-        Tile tl = getTile (top, left);
-        Tile tr = getTile (top, right);
-        Tile bl = getTile (bottom, left);
-        Tile br = getTile (bottom, right);
-        
-        if ((tl != null && tl.blocked) ||
-            (tr != null && tr.blocked) ||
-            (bl != null && bl.blocked) ||
-            (br != null && br.blocked))
+        float top = a.getMinY();
+        float bottom = a.getMaxY();
+        float left = a.getMinX();
+        float right = a.getMaxX();
+
+        Tile tl = getTile(top, left);
+        Tile tr = getTile(top, right);
+        Tile bl = getTile(bottom, left);
+        Tile br = getTile(bottom, right);
+
+        if ((tl != null && tl.isBlocked())
+                || (tr != null && tr.isBlocked())
+                || (bl != null && bl.isBlocked())
+                || (br != null && br.isBlocked()))
         {
-            a.hitTile (tl, tr, bl, br);
+            a.hitTile(tl, tr, bl, br);
         }
     }
-    
-    private Tile getTile (float y, float x)
+
+    private Tile getTile(float y, float x)
     {
         int row = (int) (y / tileHeight);
         int col = (int) (x / tileWidth);
-        
-        return getTile (row, col);
+
+        return getTile(row, col);
     }
 }

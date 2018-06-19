@@ -62,12 +62,15 @@ public class TestUtility
     public static TileLayer createTestTileLayer (int rows, int columns)
     {
         BufferedImage image = createTestTileImage ();
-        TileLayer tileLayer = new TileLayer (rows, columns, 32, 32);
+        Tileset tileset = new TestTileset (image);
+        
+        TileLayer tileLayer = new TileLayer (tileset, rows, columns, 32, 32);
+        
         for (int r = 0; r < tileLayer.rows; r++)
         {
             for (int c = 0; c < tileLayer.columns; c++)
             {
-                tileLayer.set (r, c, image);
+                tileLayer.set (r, c, 0);
             }
         }
         
