@@ -8,14 +8,21 @@ public class State
 {
     private final BufferedImage[] frames;
     private final long millisecondsPerFrame;
+    private final boolean singleFrame;
     private final boolean loop;
     private int index;
     private long elapsedTime;
     private boolean complete;
     
+    public State (BufferedImage frame)
+    {
+        this (new BufferedImage[]{frame}, 1, false);
+    }
+    
     public State (BufferedImage[] frames, long millisecondsPerFrame, boolean loop)
     {
         this.frames = requireNonNull (frames);
+        this.singleFrame = frames.length == 1;
         this.millisecondsPerFrame = requireGreaterThan (0L, millisecondsPerFrame);
         this.loop = loop;
         reset ();
@@ -28,7 +35,7 @@ public class State
     
     public void update (long elapsedMilliseconds)
     {
-        if (complete)
+        if (singleFrame || complete)
         {
             return;
         }
@@ -56,6 +63,11 @@ public class State
     
     public final void reset ()
     {
+        if (singleFrame)
+        {
+            return;
+        }
+        
         this.index = 0;
         this.elapsedTime = 0L;
         this.complete = false;
