@@ -16,9 +16,9 @@ public class Test01
         update (stage, 30 * 32, 40 * 32);
         update (stage, 3000, 3000);
         
-        for (int r = 0; r < stage.tileLayer.rows; r++)
+        for (int r = 0; r < stage.tileLayer.getRows(); r++)
         {
-            for (int c = 0; c < stage.tileLayer.columns; c++)
+            for (int c = 0; c < stage.tileLayer.getColumns(); c++)
             {
                 Tile tile = stage.tileLayer.getTile (r, c);
                 out.print ("row ");

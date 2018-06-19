@@ -59,16 +59,16 @@ public class TestUtility
         return new Actor (states, 32, 32);
     }
     
-    public static TileLayer createTestTileLayer (int rows, int columns)
+    public static TextTileLayer createTestTileLayer (int rows, int columns)
     {
         BufferedImage image = createTestTileImage ();
         Tileset tileset = new TestTileset (image);
         
-        TileLayer tileLayer = new TileLayer (tileset, rows, columns, 32, 32);
+        TextTileLayer tileLayer = new TextTileLayer (tileset, rows, columns, 32, 32);
         
-        for (int r = 0; r < tileLayer.rows; r++)
+        for (int r = 0; r < tileLayer.getRows(); r++)
         {
-            for (int c = 0; c < tileLayer.columns; c++)
+            for (int c = 0; c < tileLayer.getColumns(); c++)
             {
                 tileLayer.set (r, c, 0);
             }
@@ -79,7 +79,7 @@ public class TestUtility
     
     public static Stage createTestStage (int rows, int columns, float vWidth, float vHeight)
     {
-        TileLayer layer = createTestTileLayer (rows, columns);
+        TextTileLayer layer = createTestTileLayer (rows, columns);
         Viewport viewport = new Viewport (vWidth, vHeight);
         Stage stage = new Stage (viewport, layer);
         stage.setFocus (createTestActor ());

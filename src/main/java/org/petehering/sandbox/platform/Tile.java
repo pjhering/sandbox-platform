@@ -1,7 +1,6 @@
 package org.petehering.sandbox.platform;
 
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import static java.util.Objects.requireNonNull;
 import static org.petehering.sandbox.Utility.requireGreaterThan;
 import static org.petehering.sandbox.Utility.requireGreaterThanOrEqualTo;

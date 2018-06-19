@@ -32,13 +32,13 @@ public class Viewport
         
         if (a != null)
         {
-            x = clamp (a.getCenterX () - (width / 2f), 0f, stage.tileLayer.width - width);
-            y = clamp (a.getCenterY () - (height / 2f), 0f, stage.tileLayer.height - height);
+            x = clamp (a.getCenterX () - (width / 2f), 0f, stage.tileLayer.getWidth() - width);
+            y = clamp (a.getCenterY () - (height / 2f), 0f, stage.tileLayer.getHeight() - height);
         }
         else
         {
-            x = (stage.tileLayer.width - width) / 2f;
-            y = (stage.tileLayer.height - height) / 2f;
+            x = (stage.tileLayer.getWidth() - width) / 2f;
+            y = (stage.tileLayer.getHeight() - height) / 2f;
         }
         
         offset.setLocation (x, y);
