@@ -7,13 +7,13 @@ public class TileLayer
 {
     private final String configuration;
     private final Tileset tileset;
-    private Tile[][] tiles;
-    private final int rows;
-    private final int columns;
-    private final int tileWidth;
-    private final int tileHeight;
-    private final int width;
-    private final int height;
+    private final Tile[][] tiles;
+    public final int rows;
+    public final int columns;
+    public final int tileWidth;
+    public final int tileHeight;
+    public final int width;
+    public final int height;
     
     public TileLayer (String config, Tileset tileset, int rows, int columns, int tileWidth, int tileHeight)
     {

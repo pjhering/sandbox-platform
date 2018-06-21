@@ -23,10 +23,10 @@ public class IniFileParser
     private static final Class[] ACTOR_PARAMS = {
         String.class,
         State[].class,
-        Float.class,
-        Float.class,
-        Float.class,
-        Float.class};
+        float.class,
+        float.class,
+        float.class,
+        float.class};
     
     private Map<String, BufferedImage> images;
     private String line;

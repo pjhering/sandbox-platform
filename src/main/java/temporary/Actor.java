@@ -16,7 +16,17 @@ public class Actor
     protected float width;
     protected float height;
     
-    public Actor (String config, State[] states, Float x, Float y, Float width, Float height)
+    public Actor (String config, float x, float y, float width, float height)
+    {
+        this (config, new State[0], x, y, width, height);
+    }
+    
+    public Actor (String config, State state, float x, float y, float width, float height)
+    {
+        this (config, new State[]{state}, x, y, width, height);
+    }
+    
+    public Actor (String config, State[] states, float x, float y, float width, float height)
     {
         this.configuration = Objects.requireNonNull (config);
         this.states = Utility.requireNonNull (states);
