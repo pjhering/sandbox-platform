@@ -6,10 +6,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import static java.lang.Boolean.parseBoolean;
+import static java.lang.Float.parseFloat;
 import static java.lang.Integer.parseInt;
 import static java.lang.Long.parseLong;
 import static java.lang.System.out;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageIO;
 import static org.petehering.sandbox.Utility.SPACES;
@@ -17,6 +20,14 @@ import org.petehering.sandbox.sprites.SpriteSheet;
 
 public class IniFileParser
 {
+    private static final Class[] ACTOR_PARAMS = {
+        String.class,
+        State[].class,
+        Float.class,
+        Float.class,
+        Float.class,
+        Float.class};
+    
     private Map<String, BufferedImage> images;
     private String line;
     private String[] tokens;
@@ -24,11 +35,13 @@ public class IniFileParser
     private Tileset tileset;
     private TileLayer tileLayer;
     private Map<String, State[]> states;
+    private List<Actor> actors;
 
     public IniFileParser (String path)
     {
         images = new HashMap<> ();
         states = new HashMap<> ();
+        actors = new ArrayList<> ();
 
         try (InputStream stream = getClass ().getResourceAsStream (path))
         {
@@ -50,8 +63,11 @@ public class IniFileParser
                     case "[tilelayer]":
                         parseTileLayer (buffer);
                         break;
-                    case "[state]":
-                        parseState (buffer);
+                    case "[states]":
+                        parseStates (buffer);
+                        break;
+                    case "[actors]":
+                        parseActors (buffer);
                         break;
                     default:
                         throw new RuntimeException ("unrecognized line: " + line);
@@ -171,11 +187,11 @@ public class IniFileParser
         }
     }
     
-    private void parseState (BufferedReader buffer) throws IOException
+    private void parseStates (BufferedReader buffer) throws IOException
     {
         if (!next (buffer))
         {
-            throw new RuntimeException ("expecting stage configuration");
+            throw new RuntimeException ("expecting states configuration");
         }
         
         // the first line must be;
@@ -230,6 +246,45 @@ public class IniFileParser
                 default:
                     throw new RuntimeException ("illegal state definition");
             }
+        }
+    }
+    
+    private void parseActors (BufferedReader buffer) throws Exception
+    {
+        if (!next (buffer))
+        {
+            throw new RuntimeException ("expecting actors configuration");
+        }
+        
+        // first line must be:
+        //   number of actors
+        int length = parseInt (tokens[0]);
+        
+        for (int i = 0; i < length; i++)
+        {
+            if (!next (buffer))
+            {
+                throw new RuntimeException ("expecting actor definition");
+            }
+            
+            // actor definition must be:
+            //   fully qualified Actor class
+            //   states key
+            //   x
+            //   y
+            //   width
+            //   height
+            Class clazz = Class.forName (tokens[0]);
+            String key = tokens[1];
+            float x = parseFloat (tokens[2]);
+            float y = parseFloat (tokens[2]);
+            float w = parseFloat (tokens[2]);
+            float h = parseFloat (tokens[2]);
+            State[] s = states.get (key);
+            Object[] args = {line, s, x, y, w, h};
+            actors.add ((Actor) clazz
+                .getConstructor (ACTOR_PARAMS)
+                .newInstance (args));
         }
     }
 
