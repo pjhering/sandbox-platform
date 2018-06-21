@@ -6,6 +6,7 @@ import static org.petehering.sandbox.Utility.requireNonNull;
 
 public class State
 {
+    private String configuration;
     private final BufferedImage[] frames;
     private final long millisecondsPerFrame;
     private final boolean singleFrame;
@@ -71,5 +72,15 @@ public class State
         this.index = 0;
         this.elapsedTime = 0L;
         this.complete = false;
+    }
+
+    public String getConfiguration ()
+    {
+        return configuration;
+    }
+
+    public void setConfiguration (String configuration)
+    {
+        this.configuration = configuration;
     }
 }

@@ -26,4 +26,10 @@ public class Test02 extends TestCase
         DesktopApp app = new DesktopApp (game, input, 320, 240);
         app.start ();
     }
+    
+    public static void main (String[] args)
+    {
+        Test02 t02 = new Test02("Test02");
+        t02.test02 ();
+    }
 }

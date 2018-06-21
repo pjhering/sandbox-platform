@@ -1,7 +1,8 @@
 package org.petehering.sandbox.platform;
 
 import java.awt.Point;
-import static org.petehering.sandbox.Utility.clamp;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 import static org.petehering.sandbox.Utility.requireGreaterThan;
 
 public class Viewport
@@ -26,22 +27,40 @@ public class Viewport
         this.offset = new Point ();
     }
     
+    public void center (float targetX, float targetY, int stageWidth, int stageHeight)
+    {
+        x = max(0f, min(stageWidth - width, targetX - (width / 2f)));
+        y = max(0f, min(stageHeight - height, targetY - (height / 2f)));
+        
+        offset.setLocation (x, y);
+    }
+    
+    public void center (int stageWidth, int stageHeight)
+    {
+        x = (stageWidth - width) / 2;
+        y = (stageHeight - height) / 2;
+        
+        offset.setLocation (x, y);
+    }
+    
     public void center (Stage stage)
     {
         Actor a = stage.getFocus ();
         
         if (a != null)
         {
-            x = clamp (a.getCenterX () - (width / 2f), 0f, stage.tileLayer.getWidth() - width);
-            y = clamp (a.getCenterY () - (height / 2f), 0f, stage.tileLayer.getHeight() - height);
+            center (
+                a.getCenterX (),
+                a.getCenterY (),
+                stage.tileLayer.getWidth (),
+                stage.tileLayer.getHeight ());
         }
         else
         {
-            x = (stage.tileLayer.getWidth() - width) / 2f;
-            y = (stage.tileLayer.getHeight() - height) / 2f;
+            center (
+                stage.tileLayer.getWidth (),
+                stage.tileLayer.getHeight ());
         }
-        
-        offset.setLocation (x, y);
     }
 
     public boolean contains (Actor a)
@@ -50,5 +69,21 @@ public class Viewport
             && this.x + this.width > a.getMinX ()
             && this.y < a.getMaxY ()
             && this.y + this.height > a.getMinY ();
+    }
+    
+    @Override
+    public String toString ()
+    {
+        return new StringBuilder ()
+            .append ("Viewport{x=")
+            .append (x)
+            .append (", y=")
+            .append (y)
+            .append (", width=")
+            .append (width)
+            .append (", height=")
+            .append (height)
+            .append ("}")
+            .toString ();
     }
 }

@@ -182,12 +182,12 @@ public class Actor implements Comparable<Actor>
             : 1;
     }
 
-    public Set<Actor> getAdded ()
+    Set<Actor> getAdded ()
     {
         return added;
     }
 
-    public Set<Actor> getRemoved ()
+    Set<Actor> getRemoved ()
     {
         return removed;
     }
