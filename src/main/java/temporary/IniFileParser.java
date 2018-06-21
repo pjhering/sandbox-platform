@@ -31,11 +31,11 @@ public class IniFileParser
     private Map<String, BufferedImage> images;
     private String line;
     private String[] tokens;
-    private Background background;
+    protected Background background;
     private Tileset tileset;
-    private TileLayer tileLayer;
+    protected TileLayer tileLayer;
     private Map<String, State[]> states;
-    private List<Actor> actors;
+    protected List<Actor> actors;
 
     public IniFileParser (String path)
     {
@@ -159,8 +159,6 @@ public class IniFileParser
                 throw new RuntimeException ("expecting tilelayer row");
             }
 
-            int y = r * height;
-
             for (int c = 0; c < cols; c++)
             {
                 if (c >= tokens.length)
@@ -170,10 +168,10 @@ public class IniFileParser
 
                 try
                 {
-                    int x = c + width;
                     int id = parseInt (tokens[c]);
 
                     // skip negative ids
+                    // skip ids not in tileset
                     if (0 <= id && id < tileset.size ())
                     {
                         tileLayer.set (id, r, c);
@@ -308,7 +306,7 @@ public class IniFileParser
     {
         while ((line = buffer.readLine ()) != null)
         {
-            out.println (line);
+//            out.println (line);
             
             line = line.trim ();
 
@@ -320,5 +318,20 @@ public class IniFileParser
         }
 
         return false;
+    }
+
+    public Background getBackground ()
+    {
+        return background;
+    }
+
+    public TileLayer getTileLayer ()
+    {
+        return tileLayer;
+    }
+
+    public List<Actor> getActors ()
+    {
+        return actors;
     }
 }

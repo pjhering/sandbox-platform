@@ -1,5 +1,7 @@
 package temporary;
 
+import java.awt.Graphics2D;
+import java.awt.Point;
 import static java.util.Objects.requireNonNull;
 import static org.petehering.sandbox.Utility.requireGreaterThan;
 
@@ -33,5 +35,21 @@ public class TileLayer
         int x = col * tileWidth;
         int y = col * tileHeight;
         tiles[row][col] = new Tile (tileset, id, x, y, tileWidth, tileHeight);
+    }
+
+    void draw (Graphics2D g, Viewport vp)
+    {
+        Point p = vp.getOffset ();
+        
+        for (int r = 0; r < rows; r++)
+        {
+            for (int c = 0; c < columns; c++)
+            {
+                if (tiles[r][c] != null && vp.isViewable (tiles[r][c]))
+                {
+                    tiles[r][c].draw (g, p);
+                }
+            }
+        }
     }
 }

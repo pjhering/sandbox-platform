@@ -1,5 +1,7 @@
 package temporary;
 
+import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import static java.util.Objects.requireNonNull;
 import static org.petehering.sandbox.Utility.requireGreaterThan;
@@ -37,5 +39,11 @@ public class Tile
     public boolean isBlocked ()
     {
         return tileset.isBlocked (id);
+    }
+
+    void draw (Graphics2D g, Point p)
+    {
+        BufferedImage img = getImage ();
+        g.drawImage (img, x - p.x, y - p.y, width, height, null);
     }
 }

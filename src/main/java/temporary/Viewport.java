@@ -13,6 +13,11 @@ public class Viewport
     private final float height;
     private final Point offset;
     
+    public Viewport (float width, float height)
+    {
+        this (0f, 0f, width, height);
+    }
+    
     public Viewport (float x, float y, float width, float height)
     {
         this.x = requireGreaterThanOrEqualTo (0f, x);
