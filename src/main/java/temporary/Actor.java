@@ -1,5 +1,6 @@
 package temporary;
 
+import static java.awt.Color.CYAN;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
@@ -43,11 +44,14 @@ public class Actor
     public void draw (Graphics2D g, int xOffset, int yOffset)
     {
         BufferedImage image = this.states[state].getImage ();
-        int iWidth = image.getWidth () / 2;
-        int iHeight = image.getHeight () / 2;
-        int _x = (int) (x + (width / 2f)) - iWidth - xOffset;
-        int _y = (int) (y + (height / 2f)) - iHeight - yOffset;
+        int _w = (int) ((width - image.getWidth()) / 2);
+        int _h = (int) ((height - image.getHeight()) / 2);
+        int _x = (int) (x  + _w - xOffset);
+        int _y = (int) (y + _h - yOffset);
         g.drawImage (image, _x, _y, null);
+        
+        g.setColor(CYAN);
+        g.drawRect((int)x - xOffset, (int)y - yOffset, (int)width, (int)height);
     }
     
     public void setState (int state)

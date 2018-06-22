@@ -11,10 +11,10 @@ public class ViewportTest
         Background bg = ini.getBackground ();
         TileLayer tl = ini.getTileLayer ();
         List<Actor> a = ini.getActors ();
-        Viewport vp = new Viewport (640f, 480f);
+        Viewport vp = new Viewport (tl.width - 32, tl.height - 32);
         ViewportGame game = new ViewportGame (bg, tl, a, vp);
         
-        DesktopApp app = new DesktopApp (game, 640, 480);
+        DesktopApp app = new DesktopApp (game, tl.width - 32, tl.height - 32);
         app.start ();
     }
 }

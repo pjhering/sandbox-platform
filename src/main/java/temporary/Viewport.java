@@ -29,8 +29,8 @@ public class Viewport
     
     public void update (float targetX, float targetY, TileLayer tileLayer)
     {
-        x = max (0f, min (tileLayer.width - width, targetX));
-        y = max (0f, min (tileLayer.height - height, targetY));
+        x = max (0f, min (tileLayer.width - width, targetX - (width / 2)));
+        y = max (0f, min (tileLayer.height - height, targetY - (width / 2)));
         
         offset.setLocation (x, y);
     }

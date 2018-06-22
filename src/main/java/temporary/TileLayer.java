@@ -33,7 +33,7 @@ public class TileLayer
     public void set (int id, int row, int col)
     {
         int x = col * tileWidth;
-        int y = col * tileHeight;
+        int y = row * tileHeight;
         tiles[row][col] = new Tile (tileset, id, x, y, tileWidth, tileHeight);
     }
 

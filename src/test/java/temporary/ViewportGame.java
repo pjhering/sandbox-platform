@@ -1,6 +1,9 @@
 package temporary;
 
 import static java.awt.Color.BLACK;
+import static java.awt.Color.WHITE;
+import java.awt.Graphics2D;
+import java.awt.Point;
 import java.util.List;
 import org.petehering.sandbox.Game;
 import org.petehering.sandbox.View;
@@ -23,8 +26,8 @@ public class ViewportGame implements Game
         this.viewport = vp;
         this.x = 0f;
         this.y = 0f;
-        this.deltaX = 0.125f;
-        this.deltaY = 0.125f;
+        this.deltaX = 0.0625f;
+        this.deltaY = 0.0625f;
     }
 
     @Override
@@ -49,8 +52,16 @@ public class ViewportGame implements Game
     @Override
     public void render (View view)
     {
-        view.clear (BLACK);
-        tiles.draw (view.getViewGraphics (), viewport);
+        view.clear (WHITE);
+        
+        Graphics2D g = view.getViewGraphics();
+        Point p = viewport.getOffset();
+        
+        tiles.draw (g, viewport);
+        actors.forEach((Actor a)->a.draw(g, p.x, p.y));
+        
+        g.setColor(BLACK);
+        g.fillOval((int)x, (int)y, 4, 4);
         view.present ();
     }
 

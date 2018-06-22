@@ -275,9 +275,9 @@ public class IniFileParser
             Class clazz = Class.forName (tokens[0]);
             String key = tokens[1];
             float x = parseFloat (tokens[2]);
-            float y = parseFloat (tokens[2]);
-            float w = parseFloat (tokens[2]);
-            float h = parseFloat (tokens[2]);
+            float y = parseFloat (tokens[3]);
+            float w = parseFloat (tokens[4]);
+            float h = parseFloat (tokens[5]);
             State[] s = states.get (key);
             Object[] args = {line, s, x, y, w, h};
             actors.add ((Actor) clazz
